@@ -11,9 +11,7 @@ from bs4 import BeautifulSoup
 import requests # find_all() get_text()
 import datetime # needed for timestamp in output.csv
 
-# TODO add print statements to show user the steps
 # TODO let user choose which search engine.
-# TODO change date stamp in output.csv to keyword stamp. Date stamp at top.
 
 #import keywords from external csv file in a list, replace spaces with + for easy url insertion
 file_of_keywords = open("keywords.csv", 'r')
@@ -26,11 +24,23 @@ file_of_keywords.closed
 with open("output.csv", "w"):
     pass
 
+user_input = input("what site would you like to search? Enter 'bing' or 'unspecified': ").lower()
+
+def site_to_search(user_pick, keyword):
+    temp_url = ""
+    if user_pick == 'bing':
+        temp_url = "https://www.bing.com/news/search?q=" +\
+            keyword +\
+            "&qft=interval%3d%229%22&form=PTFTNR"
+    else:
+        print("bad choice")
+    return temp_url
+
 def get_content(search_term):
+    
     # Use request lib to get homepage content, do your url research
-    url = "https://www.bing.com/news/search?q=" +\
-        search_term +\
-        "&qft=interval%3d%229%22&form=PTFTNR"
+    url = site_to_search(user_input, search_term)
+    print("searching for: " + search_term)
     first_request = requests.get(url)
     first_results = first_request.content
 
