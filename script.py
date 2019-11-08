@@ -11,6 +11,9 @@ from bs4 import BeautifulSoup
 import requests # find_all() get_text()
 import datetime # needed for timestamp in output.csv
 
+# TODO add print statements to show user the steps
+# TODO let user choose which search engine.
+# TODO change date stamp in output.csv to keyword stamp. Date stamp at top.
 
 #import keywords from external csv file in a list, replace spaces with + for easy url insertion
 file_of_keywords = open("keywords.csv", 'r')
@@ -46,14 +49,15 @@ def get_content(search_term):
     with open("output.csv", "a") as local_file:
         # add stamp to new export data
         local_file.write('\n') # newline ensures column 1
-        todays_date = str(datetime.datetime.now().date())
-        local_file.write(str(todays_date) + "," + '\n') 
-        local_file.write(str(url) + "\n")
+        local_file.write(search_term + '\n')
         # append data to file in column format
         for data in bing_list:
             local_file.write(data) #newline should force column format
 
+print("Searching for terms...")
 for each_keyword in keywords:
     get_content(each_keyword)
 
+num_line = sum(1 for line in open("output.csv"))
+print("Finished! " + str(num_line) + " lines written to output.csv")
 exit(0)
